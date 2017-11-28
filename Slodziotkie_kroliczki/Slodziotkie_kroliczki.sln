@@ -1,14 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slodziotkie_kroliczki", "Assembly-CSharp.csproj", "{BA8CC892-6956-301C-56E1-9EB185BAC649}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-
+		{BA8CC892-6956-301C-56E1-9EB185BAC649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA8CC892-6956-301C-56E1-9EB185BAC649}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA8CC892-6956-301C-56E1-9EB185BAC649}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA8CC892-6956-301C-56E1-9EB185BAC649}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
