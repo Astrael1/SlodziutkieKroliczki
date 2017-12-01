@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager> 
 {
 	public GameObject przeszkoda;
 	public Transform generator;
 	public GameObject background;
+	public Text scoreText;
 
 
 	public float przeszkodyCzas;
 	private bool nastepna = true;
+	private float score;
+	public float velocity;
+	public float chmurkaSila;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +30,7 @@ public class GameManager : Singleton<GameManager>
 			StartCoroutine (NowaPrzeszkoda() );
 			nastepna = false;
 		}
+		UpdateScore ();
 
 		
 	}
@@ -39,5 +45,11 @@ public class GameManager : Singleton<GameManager>
 		nastepna = true;
 
 		Debug.Log ("Nowa przeszkoda");
+	}
+
+	private void UpdateScore()
+	{
+		score += (Time.deltaTime * velocity);
+		scoreText.text = "Score: " + (int)score;
 	}
 }

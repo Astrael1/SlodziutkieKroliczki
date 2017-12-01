@@ -18,4 +18,13 @@ public class PlayerController : MonoBehaviour {
 		transform.Translate (Vector2.right * Input.GetAxis ("Horizontal") * speed * Time.deltaTime);
 		
 	}
+
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.gameObject.CompareTag("chmurka"))
+			{
+				Destroy(other.gameObject);
+			GameManager.Instance.velocity -= GameManager.Instance.chmurkaSila;
+			}
+	}
 }

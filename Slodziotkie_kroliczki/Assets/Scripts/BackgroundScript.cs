@@ -20,32 +20,41 @@ public class BackgroundScript : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		transform.SetParent (parent);
 		rigidBody = GetComponent<Rigidbody2D> ();
-		rigidBody.velocity = new Vector2 (0, 10);
+		setVelocity (GameManager.Instance.velocity);
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
+		setVelocity (GameManager.Instance.velocity);
 		
 	}
 
 	void OnTriggerEnter2D( Collider2D other )
 	{
+		
+
 		if (other.gameObject.CompareTag ("Player")) 
 		{
 			Instantiate (background, next, Quaternion.identity);
-			Debug.Log ("Kolizja z graczem");
+			//Debug.Log ("Kolizja z graczem");
 		}
 		else if (other.gameObject.CompareTag("Destruktor"))
 		{
-			Debug.Log("Kolizja z destruktorem");
+			//Debug.Log("Kolizja z destruktorem");
 			Destroy (this.gameObject);
 		}
 			
 
 
+	}
+
+	private void setVelocity(float f)
+	{
+		rigidBody.velocity = new Vector2 (0, f);
 	}
 }
