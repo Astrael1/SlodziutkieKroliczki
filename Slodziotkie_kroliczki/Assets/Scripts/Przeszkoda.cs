@@ -21,6 +21,17 @@ public class Przeszkoda : MonoBehaviour
 		
 	}
 
+	void OnTriggerEnter2D( Collider2D other )
+	{
+
+
+		if (other.gameObject.CompareTag ("Destruktor")) {
+			//Debug.Log("Kolizja z destruktorem");
+			Destroy (this.gameObject);
+		}
+	}
+
+
 	private void setVelocity(float f)
 	{
 		rigidBody.velocity = new Vector2 (0, f);

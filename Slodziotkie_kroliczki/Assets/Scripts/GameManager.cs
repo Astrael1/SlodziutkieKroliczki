@@ -16,6 +16,7 @@ public class GameManager : Singleton<GameManager>
 	private float score;
 	public float velocity;
 	public float chmurkaSila;
+	public float acceleration;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +31,12 @@ public class GameManager : Singleton<GameManager>
 			StartCoroutine (NowaPrzeszkoda() );
 			nastepna = false;
 		}
+		if (velocity < 0) 
+		{
+			velocity = 0;
+			acceleration = 0;
+		}
+		velocity += acceleration * Time.deltaTime;
 		UpdateScore ();
 
 		
@@ -39,8 +46,8 @@ public class GameManager : Singleton<GameManager>
 	{
 		
 		yield return new WaitForSeconds (przeszkodyCzas);
-		float r = (background.GetComponent<SpriteRenderer> ().bounds.size.x / 2);
-		float x = Random.Range(-1 *r, r);
+		//float r = (background.GetComponent<SpriteRenderer> ().bounds.size.x / 2); 
+		float x = Random.Range(-5, 5);
 		Instantiate (przeszkoda, new Vector3(x, generator.transform.position.y, 1), Quaternion.identity,generator);
 		nastepna = true;
 

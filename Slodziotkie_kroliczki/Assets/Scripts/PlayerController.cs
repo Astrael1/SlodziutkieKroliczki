@@ -12,8 +12,14 @@ public class PlayerController : MonoBehaviour {
 		
 	}
 	
-	// Update is called once per frame
-	void Update () 
+	void Update ()
+	{
+		if (GameManager.Instance.velocity <=0)
+		{
+			Destroy (gameObject);
+		}
+	}
+	void FixedUpdate () 
 	{
 		transform.Translate (Vector2.right * Input.GetAxis ("Horizontal") * speed * Time.deltaTime);
 		
