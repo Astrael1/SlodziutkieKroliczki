@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour {
 	float speed;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		
 	}
 	
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 		if (GameManager.Instance.velocity <=0)
 		{
 			Destroy (gameObject);
+			GameManager.Instance.GameOverMessage ();
 		}
 	}
 	void FixedUpdate () 
