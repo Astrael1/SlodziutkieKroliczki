@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
 	public GameObject background;
 	public Text scoreText;
 	public Text gameOverText;
+    public GameObject gameOverButtons;
 
 
 	public float przeszkodyCzas;
@@ -67,5 +68,6 @@ public class GameManager : Singleton<GameManager>
 	{
 		gameOverText.text = "GAME OVER\nScore: " + (int)score;
 		gameOverText.gameObject.SetActive(true);
+        gameOverButtons.SetActive(true);
 	}
 }
