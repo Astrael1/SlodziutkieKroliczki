@@ -13,11 +13,13 @@ public class GameManager : Singleton<GameManager>
     public GameObject gameOverButtons;
 
 
-	public float przeszkodyCzas;
+	private float spawnCheck;
 	private float score;
 	public float velocity;
 	public float chmurkaSila;
 	public float acceleration;
+	private float distance;
+	public float obstacleIntervals; //co ile pojawia sie chmurka
 
 	// Use this for initialization
 	void Start () 
@@ -34,6 +36,8 @@ public class GameManager : Singleton<GameManager>
 			acceleration = 0;
 		}
 		velocity += acceleration * Time.deltaTime;
+		distance += velocity * Time.deltaTime + (acceleration * Time.deltaTime * Time.deltaTime) / 2; //funkcja na droge .-.
+		spawnCheck = (int)distance % obstacleIntervals;
 		UpdateScore ();
 
 		
@@ -42,18 +46,23 @@ public class GameManager : Singleton<GameManager>
 	private IEnumerator NowaPrzeszkoda()
 	{
 		
-
 		//float r = (background.GetComponent<SpriteRenderer> ().bounds.size.x / 2);
 		while (true) 
 		{
-			float x = Random.Range(-5, 5);
-			Instantiate (przeszkoda, new Vector3(x, generator.transform.position.y, 1), Quaternion.identity,generator);
+			if(spawnCheck == 10) //10 zeby dac graczowi chwile na ogarniecie
+			{
+				float x = Random.Range(-5, 5);
+				Instantiate (przeszkoda, new Vector3(x, generator.transform.position.y, 1), Quaternion.identity,generator);
 
 
-			//NowaPrzeszkoda ();
-			Debug.Log ("Nowa przeszkoda");
-			yield return new WaitForSeconds (przeszkodyCzas);
+				//NowaPrzeszkoda ();
+				Debug.Log ("Nowa przeszkoda");
+			 	// new WaitForFixedUpdate (przeszkodyCzas);
+				yield return new WaitForSeconds(1); //inaczej spawnuje miliord chmurek na raz, ale teraz pojawia sie max 1 na sekunde, niezaleznie od predkosci
+			}
+			yield return null;
 		}
+
 
 
 	}
@@ -61,7 +70,7 @@ public class GameManager : Singleton<GameManager>
 	private void UpdateScore()
 	{
 		score += (Time.deltaTime * velocity);
-		scoreText.text = "Score: " + (int)score;
+		scoreText.text = "Score: " + (int)distance;
 	}
 
 	public void GameOverMessage()
