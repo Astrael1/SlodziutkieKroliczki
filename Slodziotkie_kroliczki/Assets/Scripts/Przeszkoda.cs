@@ -6,6 +6,8 @@ public class Przeszkoda : MonoBehaviour
 {
 
 	private Rigidbody2D rigidBody;
+	public float OwnSpeed;
+	public float SpeedMultiplier;
 
 	// Use this for initialization
 	void Start () {
@@ -17,14 +19,20 @@ public class Przeszkoda : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		setVelocity (GameManager.Instance.velocity);
+		if (OwnSpeed == 1) //pozwala nadawac obiektom wlasna predkosc
+		{
+			setVelocity (GameManager.Instance.velocity * SpeedMultiplier);
+		} 
+		else 
+		{
+			setVelocity (GameManager.Instance.velocity);
+		}
 		
 	}
 
 	void OnTriggerEnter2D( Collider2D other )
 	{
-
-
+		
 		if (other.gameObject.CompareTag ("Destruktor")) {
 			//Debug.Log("Kolizja z destruktorem");
 			Destroy (this.gameObject);

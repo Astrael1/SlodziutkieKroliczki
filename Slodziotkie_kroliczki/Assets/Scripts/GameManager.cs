@@ -13,14 +13,18 @@ public class GameManager : Singleton<GameManager>
 	public Text gameOverText;
     public GameObject gameOverButtons;
 
-
-	private float spawnCheck;
+	private float cloudSpawnCheck;
+	public float CloudIntervals; //co ile pojawia sie chmurka
+	private float cloud2SpawnCheck;
+	public float Cloud2Intervals; //co ile pojawia sie chmurka o wlasnej predkosci
+	private float InverterSpawnCheck;
+	public float InverterIntervals; //co ile pojawia sie odwracacz sterowania
+	public float InversionDuration; //ile trwa odwrocenie sterowania
 	private float score;
 	public float velocity;
 	public float chmurkaSila;
 	public float acceleration;
 	private float distance;
-	public float obstacleIntervals; //co ile pojawia sie chmurka
 
 	// Use this for initialization
 	void Start () 
@@ -39,7 +43,9 @@ public class GameManager : Singleton<GameManager>
 			
 		velocity += acceleration * Time.deltaTime;
 		distance += velocity * Time.deltaTime + (acceleration * Time.deltaTime * Time.deltaTime) / 2; //funkcja na droge .-.
-		spawnCheck = (int)distance % obstacleIntervals;
+		cloudSpawnCheck = (int)distance % CloudIntervals;
+		cloud2SpawnCheck = (int)distance % Cloud2Intervals;
+		InverterSpawnCheck = (int)distance % InverterIntervals;
 		UpdateScore ();
 
 		
@@ -51,21 +57,39 @@ public class GameManager : Singleton<GameManager>
 	}
 
 	private IEnumerator SpawnujPrzeszkody()
-	{
-		
+	{		
 		//float r = (background.GetComponent<SpriteRenderer> ().bounds.size.x / 2);
 		while (true) 
 		{
 			float x = Random.Range(-5, 5);
-			if(spawnCheck == 10) //10 zeby dac graczowi chwile na ogarniecie
+			float x1 = Random.Range(-5, 5);
+			float x2 = Random.Range(-5, 5);
+			if(cloudSpawnCheck == 10) //10 zeby dac graczowi chwile na ogarniecie
 			{
-				Instantiate (przeszkody[0], new Vector3(x, generator.transform.position.y, 1), Quaternion.identity,generator);
-
+				Instantiate (przeszkody[0], new Vector3(x, generator.transform.position.y, 1), Quaternion.identity,generator); //podstawowa chmurka
 
 				//NowaPrzeszkoda ();
 				Debug.Log ("Nowa przeszkoda");
 			 	// new WaitForFixedUpdate (przeszkodyCzas);
 				yield return new WaitForSeconds(1); //inaczej spawnuje miliord chmurek na raz, ale teraz pojawia sie max 1 na sekunde, niezaleznie od predkosci
+			}
+			if(cloud2SpawnCheck == 30) //jak wyzej
+			{
+				Instantiate (przeszkody[1], new Vector3(x1, generator.transform.position.y, 1), Quaternion.identity,generator); //churka z wlasna predkoscia
+
+				//NowaPrzeszkoda ();
+				Debug.Log ("Nowa przeszkoda");
+				// new WaitForFixedUpdate (przeszkodyCzas);
+				yield return new WaitForSeconds(1); 
+			}
+			if(InverterSpawnCheck == 50) //jak wyzej
+			{
+				Instantiate (przeszkody[2], new Vector3(x2, generator.transform.position.y, 1), Quaternion.identity,generator); //odwracacz sterowania
+
+				//NowaPrzeszkoda ();
+				Debug.Log ("Nowa przeszkoda");
+				// new WaitForFixedUpdate (przeszkodyCzas);
+				yield return new WaitForSeconds(1);
 			}
 			for (int i = 0; i <= przeszkody.GetLength (0); i++) 
 			{
@@ -77,10 +101,8 @@ public class GameManager : Singleton<GameManager>
 			}
 			yield return null;
 		}
-
-
-
 	}
+
 
 	private void UpdateScore()
 	{
