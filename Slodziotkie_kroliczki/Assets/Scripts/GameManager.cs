@@ -11,6 +11,7 @@ public class GameManager : Singleton<GameManager>
 	public GameObject background;
 	public Text scoreText;
 	public Text gameOverText;
+	public Image dirt;
     public GameObject gameOverButtons;
 
 	private float cloudSpawnCheck;
@@ -20,11 +21,16 @@ public class GameManager : Singleton<GameManager>
 	private float InverterSpawnCheck;
 	public float InverterIntervals; //co ile pojawia sie odwracacz sterowania
 	public float InversionDuration; //ile trwa odwrocenie sterowania
+	private float VisionReductionCheck;
+	public float VisionReductionIntervals; // co ile pojawia sie plama
+	public float VisionReductionDuration; // jak dlugo trwa plama
 	private float score;
 	public float velocity;
 	public float chmurkaSila;
 	public float acceleration;
 	private float distance;
+
+	public bool[] playerStatus = new bool[20];
 
 	// Use this for initialization
 	void Start () 
@@ -46,6 +52,7 @@ public class GameManager : Singleton<GameManager>
 		cloudSpawnCheck = (int)distance % CloudIntervals;
 		cloud2SpawnCheck = (int)distance % Cloud2Intervals;
 		InverterSpawnCheck = (int)distance % InverterIntervals;
+		VisionReductionCheck = (int)distance % VisionReductionIntervals;
 		UpdateScore ();
 
 		
@@ -75,7 +82,7 @@ public class GameManager : Singleton<GameManager>
 			}
 			if(cloud2SpawnCheck == 30) //jak wyzej
 			{
-				Instantiate (przeszkody[1], new Vector3(x1, generator.transform.position.y, 1), Quaternion.identity,generator); //churka z wlasna predkoscia
+				ZamowPrzeszkode(1); //churka z wlasna predkoscia
 
 				//NowaPrzeszkoda ();
 				Debug.Log ("Nowa przeszkoda");
@@ -84,11 +91,16 @@ public class GameManager : Singleton<GameManager>
 			}
 			if(InverterSpawnCheck == 50) //jak wyzej
 			{
-				Instantiate (przeszkody[2], new Vector3(x2, generator.transform.position.y, 1), Quaternion.identity,generator); //odwracacz sterowania
+				ZamowPrzeszkode (2); //odwracacz sterowania
 
 				//NowaPrzeszkoda ();
 				Debug.Log ("Nowa przeszkoda");
 				// new WaitForFixedUpdate (przeszkodyCzas);
+				yield return new WaitForSeconds(1);
+			}
+			if (VisionReductionCheck == 45) 
+			{
+				ZamowPrzeszkode (3);
 				yield return new WaitForSeconds(1);
 			}
 			for (int i = 0; i <= przeszkody.GetLength (0); i++) 

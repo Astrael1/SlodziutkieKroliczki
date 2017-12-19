@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour {
 
 	[SerializeField]
 	float speed;
-	private float inverted = 0;
 	public Text ConfusedText;
 
 	// Use this for initialization
@@ -26,7 +25,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	void FixedUpdate () 
 	{
-		if (inverted == 1) 
+		if (GameManager.Instance.playerStatus[0] == true) 
 		{
 			transform.Translate (Vector2.left * Input.GetAxis ("Horizontal") * speed * Time.deltaTime);
 		} 
@@ -49,15 +48,29 @@ public class PlayerController : MonoBehaviour {
 			Destroy(other.gameObject);
 			StartCoroutine (Inversion());
 		}
+		if(other.gameObject.CompareTag("ReduceVision"))
+		{
+			Destroy(other.gameObject);
+			StartCoroutine (ReduceVision());
+
+		}
 	}
 
 	private IEnumerator Inversion() //odwraca sterowanie na liczbe sekund ustawiona w GameManager
 	{
-		inverted = 1;
-		//ConfusedText.text = "You're Confused!";  //tekst nie chce mi dzialac xd
-		//ConfusedText.gameObject.SetActive (true);
+		GameManager.Instance.playerStatus[0] = true; // zapisz w tablicy, ze sterowanie jest odwrocone
+		ConfusedText.text = "You're Confused!";  //tekst nie chce mi dzialac xd
+		ConfusedText.gameObject.SetActive (true);
 		yield return new WaitForSeconds (GameManager.Instance.InversionDuration);
-		inverted = 0;
-		//ConfusedText.gameObject.SetActive (false);
+		GameManager.Instance.playerStatus[0] = false;
+		ConfusedText.gameObject.SetActive (false);
+	}
+
+	private IEnumerator ReduceVision()
+	{
+		GameManager.Instance.playerStatus [1] = true;
+		GameManager.Instance.dirt.gameObject.SetActive (true);
+		yield return new WaitForSeconds (GameManager.Instance.VisionReductionDuration);
+		GameManager.Instance.dirt.gameObject.SetActive (false);
 	}
 }
