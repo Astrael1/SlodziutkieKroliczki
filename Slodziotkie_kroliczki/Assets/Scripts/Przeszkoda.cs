@@ -27,7 +27,11 @@ public class Przeszkoda : MonoBehaviour
 		{
 			setVelocity (GameManager.Instance.velocity);
 		}
-		
+		if (GameManager.Instance.velocity <= 0) 
+		{
+			gameObject.SetActive (false);
+		}
+
 	}
 
 	void OnTriggerEnter2D( Collider2D other )

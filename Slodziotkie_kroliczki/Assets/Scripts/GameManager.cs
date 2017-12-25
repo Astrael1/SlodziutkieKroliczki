@@ -24,11 +24,14 @@ public class GameManager : Singleton<GameManager>
 	private float VisionReductionCheck;
 	public float VisionReductionIntervals; // co ile pojawia sie plama
 	public float VisionReductionDuration; // jak dlugo trwa plama
+	public float InstaDeathIntervals;
+	private float InstaDeathCheck;
 	private float score;
 	public float velocity;
 	public float chmurkaSila;
 	public float acceleration;
-	private float distance;
+	public float distance;
+	public float endDistance; //po jakim dystansie gra ma sie skonczyc
 
 	public bool[] playerStatus = new bool[20];
 
@@ -45,6 +48,7 @@ public class GameManager : Singleton<GameManager>
 		{
 			velocity = 0;
 			acceleration = 0;
+			playerStatus [2] = true;
 		}
 			
 		velocity += acceleration * Time.deltaTime;
@@ -53,6 +57,7 @@ public class GameManager : Singleton<GameManager>
 		cloud2SpawnCheck = (int)distance % Cloud2Intervals;
 		InverterSpawnCheck = (int)distance % InverterIntervals;
 		VisionReductionCheck = (int)distance % VisionReductionIntervals;
+		InstaDeathCheck = (int)distance % InstaDeathIntervals;
 		UpdateScore ();
 
 		
@@ -101,6 +106,11 @@ public class GameManager : Singleton<GameManager>
 			if (VisionReductionCheck == 45) 
 			{
 				ZamowPrzeszkode (3);
+				yield return new WaitForSeconds(1);
+			}
+			if (InstaDeathCheck == 25) 
+			{
+				ZamowPrzeszkode (4);
 				yield return new WaitForSeconds(1);
 			}
 			for (int i = 0; i <= przeszkody.GetLength (0); i++) 

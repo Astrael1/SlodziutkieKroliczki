@@ -19,29 +19,32 @@ public class PlayerController : MonoBehaviour {
 	{
 		if (GameManager.Instance.velocity <=0)
 		{
-			Destroy (gameObject);
+			//Destroy (gameObject);
 			GameManager.Instance.GameOverMessage ();
 		}
 	}
 	void FixedUpdate () 
 	{
-		if (GameManager.Instance.playerStatus[0] == true) 
+		if (GameManager.Instance.playerStatus [2] != true) 
 		{
-			transform.Translate (Vector2.left * Input.GetAxis ("Horizontal") * speed * Time.deltaTime);
-		} 
-		else
-		{
-			transform.Translate (Vector2.right * Input.GetAxis ("Horizontal") * speed * Time.deltaTime);
-		}		
+			if (GameManager.Instance.playerStatus [0] == true) 
+			{
+				transform.Translate (Vector2.left * Input.GetAxis ("Horizontal") * speed * Time.deltaTime);
+			} 
+			else 
+			{
+				transform.Translate (Vector2.right * Input.GetAxis ("Horizontal") * speed * Time.deltaTime);
+			}
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if(other.gameObject.CompareTag("chmurka"))
-			{
-				Destroy(other.gameObject);
+		{
+			Destroy(other.gameObject);
 			GameManager.Instance.velocity -= GameManager.Instance.chmurkaSila;
-			}
+		}
 
 		if(other.gameObject.CompareTag("Inverter"))
 		{
@@ -52,14 +55,17 @@ public class PlayerController : MonoBehaviour {
 		{
 			Destroy(other.gameObject);
 			StartCoroutine (ReduceVision());
-
+		}
+		if(other.gameObject.CompareTag("InstaDeath"))
+		{
+			GameManager.Instance.velocity = -1;
 		}
 	}
 
 	private IEnumerator Inversion() //odwraca sterowanie na liczbe sekund ustawiona w GameManager
 	{
 		GameManager.Instance.playerStatus[0] = true; // zapisz w tablicy, ze sterowanie jest odwrocone
-		ConfusedText.text = "You're Confused!";  //tekst nie chce mi dzialac xd
+		ConfusedText.text = "You're Confused!";
 		ConfusedText.gameObject.SetActive (true);
 		yield return new WaitForSeconds (GameManager.Instance.InversionDuration);
 		GameManager.Instance.playerStatus[0] = false;
