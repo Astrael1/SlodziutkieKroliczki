@@ -9,6 +9,10 @@ public class PlayerController : MonoBehaviour {
 	float speed;
 	public Text ConfusedText;
 
+	// tablica na korutyny
+	private Coroutine[] coroutines = new Coroutine[10];
+
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -48,13 +52,23 @@ public class PlayerController : MonoBehaviour {
 
 		if(other.gameObject.CompareTag("Inverter"))
 		{
-			Destroy(other.gameObject);
-			StartCoroutine (Inversion());
+			IEnumerator num = other.GetComponent<Przeszkoda_A>().Effect(); // wynajduje efekt przeszkody
+			Destroy(other.gameObject); // niszczy przeszkode
+			if (GameManager.Instance.playerStatus [0] == true) // jesli efekt juz jest 
+			{
+				StopCoroutine (coroutines[0]); // zatrzymaj korutyne (inaczej sie nie dało)
+			}
+			coroutines[0] = StartCoroutine (num); // zaaplikuj efekt
 		}
 		if(other.gameObject.CompareTag("ReduceVision"))
 		{
+			IEnumerator num = other.GetComponent<Przeszkoda_A>().Effect();
 			Destroy(other.gameObject);
-			StartCoroutine (ReduceVision());
+			if (GameManager.Instance.playerStatus [1] == true) 
+			{
+				StopCoroutine (coroutines[1]);
+			}
+			coroutines[1] = StartCoroutine (num);
 		}
 		if(other.gameObject.CompareTag("InstaDeath"))
 		{
@@ -74,9 +88,11 @@ public class PlayerController : MonoBehaviour {
 
 	private IEnumerator ReduceVision()
 	{
+		Debug.Log ("Zaciemniam wizje");
 		GameManager.Instance.playerStatus [1] = true;
 		GameManager.Instance.dirt.gameObject.SetActive (true);
 		yield return new WaitForSeconds (GameManager.Instance.VisionReductionDuration);
 		GameManager.Instance.dirt.gameObject.SetActive (false);
+		Debug.Log ("Koniec zaciemniania");
 	}
 }

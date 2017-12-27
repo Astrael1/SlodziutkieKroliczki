@@ -14,6 +14,8 @@ public class GameManager : Singleton<GameManager>
 	public Image dirt;
     public GameObject gameOverButtons;
 
+	public Text ConfusedText;
+
 	private float cloudSpawnCheck;
 	public float CloudIntervals; //co ile pojawia sie chmurka
 	private float cloud2SpawnCheck;
@@ -81,7 +83,7 @@ public class GameManager : Singleton<GameManager>
 				Instantiate (przeszkody[0], new Vector3(x, generator.transform.position.y, 1), Quaternion.identity,generator); //podstawowa chmurka
 
 				//NowaPrzeszkoda ();
-				Debug.Log ("Nowa przeszkoda");
+				//Debug.Log ("Nowa przeszkoda");
 			 	// new WaitForFixedUpdate (przeszkodyCzas);
 				yield return new WaitForSeconds(1); //inaczej spawnuje miliord chmurek na raz, ale teraz pojawia sie max 1 na sekunde, niezaleznie od predkosci
 			}
@@ -90,7 +92,7 @@ public class GameManager : Singleton<GameManager>
 				ZamowPrzeszkode(1); //churka z wlasna predkoscia
 
 				//NowaPrzeszkoda ();
-				Debug.Log ("Nowa przeszkoda");
+				//Debug.Log ("Nowa przeszkoda");
 				// new WaitForFixedUpdate (przeszkodyCzas);
 				yield return new WaitForSeconds(1); 
 			}
@@ -99,7 +101,7 @@ public class GameManager : Singleton<GameManager>
 				ZamowPrzeszkode (2); //odwracacz sterowania
 
 				//NowaPrzeszkoda ();
-				Debug.Log ("Nowa przeszkoda");
+				//Debug.Log ("Nowa przeszkoda");
 				// new WaitForFixedUpdate (przeszkodyCzas);
 				yield return new WaitForSeconds(1);
 			}
