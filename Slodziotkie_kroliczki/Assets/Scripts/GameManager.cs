@@ -37,6 +37,9 @@ public class GameManager : Singleton<GameManager>
 
 	public bool[] playerStatus = new bool[20];
 
+
+	public bool DistanceReached = false;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -52,6 +55,8 @@ public class GameManager : Singleton<GameManager>
 			acceleration = 0;
 			playerStatus [2] = true;
 		}
+		if (distance >= endDistance)
+			DistanceReached = true;
 			
 		velocity += acceleration * Time.deltaTime;
 		distance += velocity * Time.deltaTime + (acceleration * Time.deltaTime * Time.deltaTime) / 2; //funkcja na droge .-.

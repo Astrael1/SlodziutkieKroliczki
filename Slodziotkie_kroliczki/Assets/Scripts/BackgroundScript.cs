@@ -9,6 +9,9 @@ public class BackgroundScript : MonoBehaviour {
 	public GameObject background;
 
 	[SerializeField]
+	private GameObject ground;
+
+	[SerializeField]
 	private Transform parent;
 
 	public Vector2 next
@@ -21,7 +24,8 @@ public class BackgroundScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		transform.SetParent (parent);
+		//transform.SetParent (parent);
+		transform.name = "BackgroundNo" + (int)GameManager.Instance.distance;
 		rigidBody = GetComponent<Rigidbody2D> ();
 		setVelocity (GameManager.Instance.velocity);
 		
@@ -34,13 +38,29 @@ public class BackgroundScript : MonoBehaviour {
 		
 	}
 
+	private void SpawnNext()
+	{
+		GameObject nextBackground; // obiekt, który przechowuje następny segment
+		if (GameManager.Instance.DistanceReached == false) {
+			nextBackground = Instantiate (background, next, Quaternion.identity);
+		} 
+		else 
+		{
+			nextBackground = Instantiate (ground, next, Quaternion.identity);
+		}
+
+		nextBackground.gameObject.transform.SetParent (parent); // przypisuje kolejnemu segmentowi rodzica
+
+
+	}
+
 	void OnTriggerEnter2D( Collider2D other )
 	{
 		
 
 		if (other.gameObject.CompareTag ("Player")) 
 		{
-			Instantiate (background, next, Quaternion.identity);
+			SpawnNext ();
 			//Debug.Log ("Kolizja z graczem");
 		}
 		else if (other.gameObject.CompareTag("Destruktor"))
