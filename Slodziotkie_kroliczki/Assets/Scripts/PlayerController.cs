@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
 	{
-		if (GameManager.Instance.velocity <=0)
+		if (GameManager.Instance.velocity <=0 && GameManager.Instance.Win == false)
 		{
 			//Destroy (gameObject);
 			GameManager.Instance.GameOverMessage ();
@@ -73,6 +73,11 @@ public class PlayerController : MonoBehaviour {
 		if(other.gameObject.CompareTag("InstaDeath"))
 		{
 			GameManager.Instance.velocity = -1;
+		}
+		if(other.gameObject.CompareTag("Ground"))
+		{
+			GameManager.Instance.velocity = -1;
+			GameManager.Instance.LevelCompleteMessage();
 		}
 	}
 

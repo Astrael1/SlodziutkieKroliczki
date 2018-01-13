@@ -9,8 +9,11 @@ public class GameManager : Singleton<GameManager>
 	public bool[] czyPrzeszkoda = new bool[20];
 	public Transform generator;
 	public GameObject background;
+
 	public Text scoreText;
 	public Text gameOverText;
+	public Text levelCompleteText;
+
 	public Image dirt;
     public GameObject gameOverButtons;
 
@@ -39,6 +42,8 @@ public class GameManager : Singleton<GameManager>
 
 
 	public bool DistanceReached = false;
+
+	public bool Win = false;
 
 	// Use this for initialization
 	void Start () 
@@ -144,5 +149,13 @@ public class GameManager : Singleton<GameManager>
 		gameOverText.text = "GAME OVER\nScore: " + (int)score;
 		gameOverText.gameObject.SetActive(true);
         gameOverButtons.SetActive(true);
+	}
+
+	public void LevelCompleteMessage()
+	{
+		levelCompleteText.text = "Congratulations!\nLevel Complete!\nScore " + (int)score;
+		levelCompleteText.gameObject.SetActive (true);
+		gameOverButtons.SetActive (true);
+		Win = true;
 	}
 }
