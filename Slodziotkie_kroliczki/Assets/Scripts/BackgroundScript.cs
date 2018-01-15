@@ -6,7 +6,9 @@ public class BackgroundScript : MonoBehaviour {
 
 	private Rigidbody2D rigidBody;
 
-	public GameObject background;
+	public GameObject[] background;
+
+	public int move;
 
 	[SerializeField]
 	private GameObject ground;
@@ -27,22 +29,25 @@ public class BackgroundScript : MonoBehaviour {
 		//transform.SetParent (parent);
 		transform.name = "BackgroundNo" + (int)GameManager.Instance.distance;
 		rigidBody = GetComponent<Rigidbody2D> ();
-		setVelocity (GameManager.Instance.velocity);
+		setVelocity (GameManager.Instance.velocity * move);
 		
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		setVelocity (GameManager.Instance.velocity);
+		setVelocity (GameManager.Instance.velocity * move);
 		
 	}
 
 	private void SpawnNext()
 	{
 		GameObject nextBackground; // obiekt, który przechowuje następny segment
+		int ind = Random.Range(0,2);
 		if (GameManager.Instance.DistanceReached == false) {
-			nextBackground = Instantiate (background, next, Quaternion.identity);
+			Debug.Log ("spawn " + ind);
+			nextBackground = Instantiate (background[ind], next, Quaternion.identity);
+			nextBackground.GetComponent<BackgroundScript> ().move = 1;
 		} 
 		else 
 		{

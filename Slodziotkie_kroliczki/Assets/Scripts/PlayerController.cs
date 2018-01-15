@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
 	float speed;
 	public Text ConfusedText;
 
+	public Animator PlayerAnimator;
+
 	// tablica na korutyny
 	private Coroutine[] coroutines = new Coroutine[10];
 
@@ -21,23 +23,30 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update ()
 	{
-		if (GameManager.Instance.velocity <=0 && GameManager.Instance.Win == false)
+		if (GameManager.Instance.velocity <=0 )
 		{
 			//Destroy (gameObject);
-			GameManager.Instance.GameOverMessage ();
+			PlayerAnimator.SetBool("Pause", true);
+			if(GameManager.Instance.Win == false) 
+				GameManager.Instance.GameOverMessage ();
 		}
 	}
 	void FixedUpdate () 
 	{
 		if (GameManager.Instance.playerStatus [2] != true) 
 		{
+			float dir = Input.GetAxis ("Horizontal");
 			if (GameManager.Instance.playerStatus [0] == true) 
 			{
-				transform.Translate (Vector2.left * Input.GetAxis ("Horizontal") * speed * Time.deltaTime);
+				transform.Translate (Vector2.left * dir * speed * Time.deltaTime);
+				PlayerAnimator.SetBool ("Left", Input.GetKeyDown(KeyCode.D));
+				PlayerAnimator.SetBool ("Right", Input.GetKeyDown(KeyCode.A));
 			} 
 			else 
 			{
-				transform.Translate (Vector2.right * Input.GetAxis ("Horizontal") * speed * Time.deltaTime);
+				transform.Translate (Vector2.right * dir * speed * Time.deltaTime);
+				PlayerAnimator.SetBool ("Left", Input.GetKeyDown(KeyCode.A));
+				PlayerAnimator.SetBool ("Right", Input.GetKeyDown(KeyCode.D));
 			}
 		}
 	}
